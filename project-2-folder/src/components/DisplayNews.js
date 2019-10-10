@@ -40,8 +40,7 @@ class DisplayNews extends React.Component {
     
     const originalHeadline = this.state.originalHeadline
     const fakeHeadline = originalHeadline.toLowerCase().split(/[. ,:;\-_']+/)
-    console.log(fakeHeadline)
-    
+      
     const fakeHeadlineObject = {}
 
     Promise.all(fakeHeadline.map(word => {
@@ -61,42 +60,21 @@ class DisplayNews extends React.Component {
     console.log('checking the object', fakeHeadlineObject)
   }
   
-  
-  
-
-/* 
-  
-  handleFake() { 
-    let fakeHeadlineObject = { ...this.state.fakeHeadlineObject }
-    
-    const originalHeadline = this.state.originalHeadline
-    originalHeadline.toLowerCase().split(/[. ,!:;-_']/).forEach(word => (
-      fakeHeadlineObject[word] = this.getTheWords(word)
-    ))
-    
-    // console.log(fakeHeadlineObject)
-    // fakeHeadlineObject = { ...this.state.fakeHeadlineObject }
-    this.setState({ fakeHeadlineObject })
-    // console.log('what about the faked array?', fakeHeadlineArray)
-    // console.log('faked', fakeHeadlineObject)
-  }
-
-  getTheWords(word) {
-    const wordsKey = process.env.WORDSAPI_ACCESS_KEY
-    return axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
-      headers: { 
-        'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
-        'x-rapidapi-key': wordsKey
-      } })
-      // .then((res) => console.log('here\'s the data', word, res.data.results[0].typeOf[0]))
-      .then((res) => (res.data.results[0]))   
-      .catch(() => 'not found')
-  }
-     */
+  // makeFakeHeadline(choice) {
+  //   const tempArr = []
+  //   for (let word in this.state.fakeHeadlineObject) {
+  //     const firstRoll = Math.floor(Math.random() * word.results.length)
+  //     const secondRoll = Math.floor(Math.random() * word.results[firstRoll][choice].length)
+  //     if (word.results[firstRoll][choice]) {
+  //       tempArr.push(word.results[firstRoll][choice][secondRoll])
+  //     }         
+  //   }
+  //   console.log('temp arr',tempArr)
+  // }  
 
   render() {
     const { articles, shuffleIndex } = this.state
-    console.log('checking state', this.state)
+    console.log('checking state', this.state/* , this.makeFakeHeadline('synonyms') */)
     return (
       <>
         <article>
@@ -113,7 +91,7 @@ class DisplayNews extends React.Component {
           }
         </article>
         <article>
-          <button onClick={this.handleFake}>change news</button>
+          <button onClick={this.handleFake} value="synonyms">change news</button>
           <h2>placehoilder</h2>
         </article>
       </>
