@@ -14,8 +14,13 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  top-margin: 2px black solid;
-  margin-bottom: 2px black solid;
+  border-bottom: 2px black solid;
+  border-top: 2px black solid;
+  text-transform: uppercase;
+}
+
+.dateBar p {
+  margin: 4px auto;
 }
 
 h1 {
@@ -26,10 +31,21 @@ h1 {
 }
 
 .article-wrapper {
+  width: 80vw;
   display: flex;
+  justify-content: space-between;
 }
 
 .article-wrapper div, .article-wrapper img {
   flex-grow: 1;
-  
+  max-width: 50%;
+}
+
+h2 {
+  text-align: center;
+}
+
+button {
+  width: 200px;
+  height: 30px;
 }

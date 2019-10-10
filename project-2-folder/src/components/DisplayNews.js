@@ -10,7 +10,8 @@ class DisplayNews extends React.Component {
       shuffleIndex: 0,
       error: '',
       originalHeadline: '',
-      fakeHeadlineObject: {}
+      fakeHeadlineObject: {},
+      fakeHeadlineArray: []
     }
 
     this.handleShuffle = this.handleShuffle.bind(this)
@@ -34,6 +35,32 @@ class DisplayNews extends React.Component {
   }
 
   // handleFake maps the split normal headline and makes a new object in state. we'll then use that new object to get the words for the new headline
+  
+  
+  handleFake() {
+    
+    
+    const originalHeadline = this.state.originalHeadline
+    const fakeHeadline = originalHeadline.toLowerCase().split(/[. ,:;\-_']+/)
+    console.log(fakeHeadline)
+    const wordsKey = process.env.WORDSAPI_ACCESS_KEY
+    
+    return Promise.all(fakeHeadline.map(word => {
+      return axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
+        headers: { 
+          'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+          'x-rapidapi-key': wordsKey
+        } })
+    }))
+      .then(res => this.setState({ fakeHeadlineArray: res }))
+      .catch(err => console.log(err))
+  }
+  
+  
+  
+
+/* 
+  
   handleFake() { 
     let fakeHeadlineObject = { ...this.state.fakeHeadlineObject }
     
@@ -60,7 +87,7 @@ class DisplayNews extends React.Component {
       .then((res) => (res.data.results[0]))   
       .catch(() => 'not found')
   }
-    
+     */
 
   render() {
     const { articles, shuffleIndex } = this.state
