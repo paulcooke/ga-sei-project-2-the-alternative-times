@@ -35,25 +35,30 @@ class DisplayNews extends React.Component {
   }
 
   // handleFake maps the split normal headline and makes a new object in state. we'll then use that new object to get the words for the new headline
-  
-  
   handleFake() {
-    
+    const wordsKey = process.env.WORDSAPI_ACCESS_KEY
     
     const originalHeadline = this.state.originalHeadline
     const fakeHeadline = originalHeadline.toLowerCase().split(/[. ,:;\-_']+/)
     console.log(fakeHeadline)
-    const wordsKey = process.env.WORDSAPI_ACCESS_KEY
     
-    return Promise.all(fakeHeadline.map(word => {
-      return axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
-        headers: { 
-          'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
-          'x-rapidapi-key': wordsKey
-        } })
+    const fakeHeadlineObject = {}
+
+    Promise.all(fakeHeadline.map(word => {
+      if (word.length > 5) {
+        axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
+          headers: { 
+            'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+            'x-rapidapi-key': wordsKey
+          } })
+          .then(res => fakeHeadlineObject[word] = res.data)
+      } else {
+        return word
+      }
     }))
-      .then(res => this.setState({ fakeHeadlineArray: res }))
+      .then(() => this.setState({ fakeHeadlineObject }))
       .catch(err => console.log(err))
+    console.log('checking the object', fakeHeadlineObject)
   }
   
   
