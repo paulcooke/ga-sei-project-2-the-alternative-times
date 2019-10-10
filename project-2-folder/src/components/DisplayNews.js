@@ -12,6 +12,7 @@ class DisplayNews extends React.Component {
       fakeHeadline: ''
     }
     this.handleShuffle = this.handleShuffle.bind(this)
+    this.handleFake = this.handleFake.bind(this)
   }
 
   componentDidMount() {
@@ -31,17 +32,24 @@ class DisplayNews extends React.Component {
   }
 
   handleFake() {
-    // const originalHeadline = this.state.fakeHeadline
-    // originalHeadline.split(' ')
     const wordsKey = process.env.WORDSAPI_ACCESS_KEY
-    axios.get('https://wordsapiv1.p.rapidapi.com/words/dog', {
-      headers: { 
-        'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
-        'x-rapidapi-key': wordsKey
-      }
-    })
-      .then(res => console.log(res.data))
+    const originalHeadline = this.state.fakeHeadline
+    const fakeHeadline = originalHeadline.split(' ')
+    console.log(fakeHeadline)
+    fakeHeadline.map(word => (
+      axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
+        headers: { 
+          'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+          'x-rapidapi-key': wordsKey
+        } })
+        .then(res => console.log(res.data.results[0].definition))
+    ))
+      
+    console.log('faked', fakeHeadline)
   }
+
+
+    
 
   render() {
     const { articles, shuffleIndex } = this.state
