@@ -34,7 +34,7 @@ class DisplayNews extends React.Component {
   handleFake() {
     const wordsKey = process.env.WORDSAPI_ACCESS_KEY
     const originalHeadline = this.state.fakeHeadline
-    const fakeHeadline = originalHeadline.split(' ')
+    const fakeHeadline = originalHeadline.toLowerCase().split(/[. ,:;-_']+/)
     console.log(fakeHeadline)
     fakeHeadline.map(word => (
       axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
@@ -42,7 +42,8 @@ class DisplayNews extends React.Component {
           'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
           'x-rapidapi-key': wordsKey
         } })
-        .then(res => console.log(res.data.results[0].definition))
+        .then(res => console.log(res.data.results[0].definition ? res.data.results[0].definition : ''))
+        .catch(err => console.log(err))
     ))
       
     console.log('faked', fakeHeadline)
