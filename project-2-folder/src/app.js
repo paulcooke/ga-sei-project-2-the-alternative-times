@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import './style.scss'
+
 import Header from './common/Header'
 import DisplayNews from './components/DisplayNews'
 

@@ -1,1 +1,35 @@
+* {
+  font-family: 'Times New Roman', Times, serif;
+  box-sizing: border-box; 
+}
 
+body {
+  background-color: rgb(249,247,241);
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.dateBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  top-margin: 2px black solid;
+  margin-bottom: 2px black solid;
+}
+
+h1 {
+  font-size: 80px;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 20px auto;
+}
+
+.article-wrapper {
+  display: flex;
+}
+
+.article-wrapper div, .article-wrapper img {
+  flex-grow: 1;
+  
+}

@@ -9,8 +9,10 @@ class DisplayNews extends React.Component {
       articles: null,
       shuffleIndex: 0,
       error: '',
-      originalHeadline: ''
+      originalHeadline: '',
+      fakeHeadlineObject: {}
     }
+
     this.handleShuffle = this.handleShuffle.bind(this)
     this.handleFake = this.handleFake.bind(this)
   }
@@ -33,29 +35,36 @@ class DisplayNews extends React.Component {
 
   // handleFake maps the split normal headline and makes a new object in state. we'll then use that new object to get the words for the new headline
   handleFake() { 
-    const wordsKey = process.env.WORDSAPI_ACCESS_KEY
-    const originalHeadline = this.state.fakeHeadline
-    const fakeHeadline = originalHeadline.toLowerCase().split(/[. ,:;-_']/)
-    console.log(fakeHeadline)
-    fakeHeadline.map(word => (
-      axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
-        headers: { 
-          'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
-          'x-rapidapi-key': wordsKey
-        } })
-        .then(res => console.log(res.data.results[0].typeOf[0] ? res.data.results[0].typeOf[0] : ''))
-        .catch(err => console.log(err))
+    let fakeHeadlineObject = { ...this.state.fakeHeadlineObject }
+    
+    const originalHeadline = this.state.originalHeadline
+    originalHeadline.toLowerCase().split(/[. ,!:;-_']/).forEach(word => (
+      fakeHeadlineObject[word] = this.getTheWords(word)
     ))
-      
-    console.log('faked', fakeHeadline)
+    
+    // console.log(fakeHeadlineObject)
+    // fakeHeadlineObject = { ...this.state.fakeHeadlineObject }
+    this.setState({ fakeHeadlineObject })
+    // console.log('what about the faked array?', fakeHeadlineArray)
+    // console.log('faked', fakeHeadlineObject)
   }
 
-
+  getTheWords(word) {
+    const wordsKey = process.env.WORDSAPI_ACCESS_KEY
+    return axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
+      headers: { 
+        'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+        'x-rapidapi-key': wordsKey
+      } })
+      // .then((res) => console.log('here\'s the data', word, res.data.results[0].typeOf[0]))
+      .then((res) => (res.data.results[0]))   
+      .catch(() => 'not found')
+  }
     
 
   render() {
     const { articles, shuffleIndex } = this.state
-    console.log(this.state)
+    console.log('checking state', this.state)
     return (
       <>
         <article>
@@ -64,7 +73,7 @@ class DisplayNews extends React.Component {
           {articles &&
             <>
               <h2>{articles[shuffleIndex].title}</h2>
-              <div>
+              <div className="article-wrapper">
                 <div>{articles[shuffleIndex].description}</div>
                 <img src={articles[shuffleIndex].urlToImage} alt="Image not available"/>
               </div>
