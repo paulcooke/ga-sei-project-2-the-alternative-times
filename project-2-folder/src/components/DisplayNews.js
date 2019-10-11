@@ -45,7 +45,7 @@ class DisplayNews extends React.Component {
     const fakeHeadlineObject = {}
 
     Promise.all(this.state.originalHeadline.map(word => {
-      if (word.length < 5) {
+      if (word.length < 3) {
         fakeHeadlineObject[word] = word
       } else {
         axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
@@ -111,7 +111,7 @@ class DisplayNews extends React.Component {
           <div className="button-wrapper">
             <button onClick={this.makeFakeHeadLine} value="synonyms">Altered News</button>
             <button onClick={this.makeFakeHeadLine} value="typeOf">Edited News</button>
-            <button onClick={this.makeFakeHeadLine} value="hasType">Revised News</button>
+            <button onClick={this.makeFakeHeadLine} value="similarTo">Revised News</button>
           </div>
           <h2>{fakeHeadline}</h2>
         </div>
