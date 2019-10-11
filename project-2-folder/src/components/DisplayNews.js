@@ -11,7 +11,7 @@ class DisplayNews extends React.Component {
       error: '',
       originalHeadline: [],
       fakeHeadlineObject: {},
-      fakeHeadline: 'Your fake news will appear here'
+      fakeHeadline: ''
     }
 
     this.handleShuffle = this.handleShuffle.bind(this)
@@ -36,7 +36,7 @@ class DisplayNews extends React.Component {
   }
 
   // handleFake maps the split normal headline and makes a new object in state. we'll then use that new object to get the words for the new headline
-  handleFake(e) {
+  handleFake() {
     const wordsKey = process.env.WORDSAPI_ACCESS_KEY
     
     const originalHeadline = this.state.originalHeadline
@@ -59,11 +59,12 @@ class DisplayNews extends React.Component {
     }))
       .then(() => this.setState({ fakeHeadlineObject }))
       .catch(err => console.log(err))
-    this.makeFakeHeadLine(e.target.value)
+    this.setState({ fakeHeadline: 'Your fake news will appear here' })
   }
 
-  makeFakeHeadLine(filter) {
-    let fakeHeadline = this.state.originalHeadline.map(word => {
+  makeFakeHeadLine({ target: { value } }) {
+    
+    const fakeHeadline = this.state.originalHeadline.map(word => {
       
       if (typeof this.state.fakeHeadlineObject[word] === 'string') {
         // console.log('string:',word)
@@ -72,7 +73,7 @@ class DisplayNews extends React.Component {
         // console.log('undefined:',word)
         return word
       } else {
-        return this.state.fakeHeadlineObject[word].results[0][filter] ? this.state.fakeHeadlineObject[word].results[0][filter][0] : word
+        return this.state.fakeHeadlineObject[word].results[0][value] ? this.state.fakeHeadlineObject[word].results[0][value][0] : word
       }
     })
 
@@ -89,7 +90,7 @@ class DisplayNews extends React.Component {
     return (
       <>
         <article>
-          <button onClick={this.handleShuffle}>Shuffle</button>
+          <button onClick={this.handleShuffle}>Shuffle News</button>
           {!articles && !this.error && <h1>Loading...</h1>}
           {articles &&
             <>
@@ -102,7 +103,12 @@ class DisplayNews extends React.Component {
           }
         </article>
         <article>
-          <button onClick={this.handleFake} value="synonyms">change news</button>
+          <button onClick={this.handleFake}>Randomise</button>
+          <div>
+            <button onClick={this.makeFakeHeadLine} value="synonyms">Similar News</button>
+            <button>News2</button>
+            <button>News3</button>
+          </div>
           <h2>{fakeHeadline}</h2>
         </article>
       </>
