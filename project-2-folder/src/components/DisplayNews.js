@@ -25,9 +25,7 @@ class DisplayNews extends React.Component {
 
   getStory() {
     const newsKey = process.env.NEWSAPI_ACCESS_KEY
-    axios.get(`https://newsapi.org//v2/top-headlines?country=gb&apiKey=${newsKey}`, {
-      headers: { 'X-Api-Key': newsKey }
-    })
+    axios.get(`https://newsapi.org//v2/top-headlines?country=gb&apiKey=${newsKey}`)
       .then(res => this.setState({ articles: res.data.articles, originalHeadline: res.data.articles[0].title.toLowerCase().split(/[. ,:;\-_']+/) })) // has [0] to match the shuffle index start
       .catch(err => this.setState({ error: err.message }))
   }
@@ -47,7 +45,7 @@ class DisplayNews extends React.Component {
     const fakeHeadlineObject = {}
 
     Promise.all(this.state.originalHeadline.map(word => {
-      if (word.length < 4) {
+      if (word.length < 5) {
         fakeHeadlineObject[word] = word
       } else {
         axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
@@ -108,8 +106,8 @@ class DisplayNews extends React.Component {
           <button onClick={this.handleFake}>Randomise</button>
           <div>
             <button onClick={this.makeFakeHeadLine} value="synonyms">Similar News</button>
-            <button onClick={this.makeFakeHeadLine} value="typeOf">News2</button>
-            <button onClick={this.makeFakeHeadLine} value="hasTypes">News3</button>
+            <button onClick={this.makeFakeHeadLine} value="typeOf">Similar News</button>
+            <button onClick={this.makeFakeHeadLine} value="hasType">Similar News</button>
           </div>
           <h2>{fakeHeadline}</h2>
         </article>
