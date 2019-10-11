@@ -90,7 +90,9 @@ class DisplayNews extends React.Component {
     return (
       <>
         <article>
-          <button onClick={this.handleShuffle}>Shuffle News</button>
+          <div className="button-div">
+            <button onClick={this.handleShuffle}>Shuffle News</button>
+          </div>
           {!articles && !this.error && <h1>Loading...</h1>}
           {articles &&
             <>
@@ -102,15 +104,17 @@ class DisplayNews extends React.Component {
             </>
           }
         </article>
-        <article>
-          <button onClick={this.handleFake}>Randomise</button>
-          <div>
-            <button onClick={this.makeFakeHeadLine} value="synonyms">Similar News</button>
-            <button onClick={this.makeFakeHeadLine} value="typeOf">Similar News</button>
-            <button onClick={this.makeFakeHeadLine} value="hasType">Similar News</button>
+        <div>
+          <div className="button-div">
+            <button onClick={this.handleFake}>Randomise</button>
+          </div>
+          <div className="button-wrapper">
+            <button onClick={this.makeFakeHeadLine} value="synonyms">Altered News</button>
+            <button onClick={this.makeFakeHeadLine} value="typeOf">Edited News</button>
+            <button onClick={this.makeFakeHeadLine} value="hasType">Revised News</button>
           </div>
           <h2>{fakeHeadline}</h2>
-        </article>
+        </div>
       </>
     )
   }
