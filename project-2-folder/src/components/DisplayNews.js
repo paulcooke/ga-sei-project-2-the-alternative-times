@@ -45,7 +45,7 @@ class DisplayNews extends React.Component {
     const fakeHeadlineObject = {}
 
     Promise.all(this.state.originalHeadline.map(word => {
-      if (word.length < 5) {
+      if (word.length < 8) {
         fakeHeadlineObject[word] = word
       } else {
         axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
@@ -66,46 +66,26 @@ class DisplayNews extends React.Component {
     let fakeHeadline = this.state.originalHeadline.map(word => {
       
       if (typeof this.state.fakeHeadlineObject[word] === 'string') {
-        console.log('string:',word)
+        // console.log('string:',word)
         return word
       } else if (typeof this.state.fakeHeadlineObject[word] === 'undefined') {
-        console.log('undefined:',word)
+        // console.log('undefined:',word)
         return word
       } else {
         return this.state.fakeHeadlineObject[word].results[0][filter] ? this.state.fakeHeadlineObject[word].results[0][filter][0] : word
       }
     })
 
-    console.log('fake headline array',fakeHeadline)
-    
+    // console.log('fake headline array',fakeHeadline)
+
+    this.setState({ fakeHeadline: fakeHeadline.join(' ') })
+
   }
 
 
-  // for (let word in fakeHeadlineObject) {
-  //   if (!fakeHeadlineObject[word]['results']) {
-  //     console.log('no details')
-  //   } else {
-  //     console.log(fakeHeadlineObject[word], 'text')
-  //   } 
-  // }
-    
-  
-  
-  // makeFakeHeadline(choice) {
-  //   const tempArr = []
-  //   for (let word in this.state.fakeHeadlineObject) {
-  //     const firstRoll = Math.floor(Math.random() * word.results.length)
-  //     const secondRoll = Math.floor(Math.random() * word.results[firstRoll][choice].length)
-  //     if (word.results[firstRoll][choice]) {
-  //       tempArr.push(word.results[firstRoll][choice][secondRoll])
-  //     }         
-  //   }
-  //   console.log('temp arr',tempArr)
-  // }  
-
   render() {
     const { articles, shuffleIndex, fakeHeadline } = this.state
-    console.log('checking state', this.state/* , this.makeFakeHeadline('synonyms') */)
+    console.log('checking state', this.state)
     return (
       <>
         <article>
