@@ -25,7 +25,9 @@ class DisplayNews extends React.Component {
 
   getStory() {
     const newsKey = process.env.NEWSAPI_ACCESS_KEY
-    axios.get(`https://newsapi.org//v2/top-headlines?country=gb&apiKey=${newsKey}`)
+    axios.get(`https://newsapi.org//v2/top-headlines?country=gb&apiKey=${newsKey}`, {
+      headers: { 'X-Api-Key': newsKey }
+    })
       .then(res => this.setState({ articles: res.data.articles, originalHeadline: res.data.articles[0].title.toLowerCase().split(/[. ,:;\-_']+/) })) // has [0] to match the shuffle index start
       .catch(err => this.setState({ error: err.message }))
   }
@@ -45,7 +47,7 @@ class DisplayNews extends React.Component {
     const fakeHeadlineObject = {}
 
     Promise.all(this.state.originalHeadline.map(word => {
-      if (word.length < 8) {
+      if (word.length < 4) {
         fakeHeadlineObject[word] = word
       } else {
         axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
@@ -59,7 +61,7 @@ class DisplayNews extends React.Component {
     }))
       .then(() => this.setState({ fakeHeadlineObject }))
       .catch(err => console.log(err))
-    this.setState({ fakeHeadline: 'Your fake news will appear here' })
+    this.setState({ fakeHeadline: 'YOUR FAKE NEWS WILL APPEAR HERE' })
   }
 
   makeFakeHeadLine({ target: { value } }) {
@@ -79,7 +81,7 @@ class DisplayNews extends React.Component {
 
     // console.log('fake headline array',fakeHeadline)
 
-    this.setState({ fakeHeadline: fakeHeadline.join(' ') })
+    this.setState({ fakeHeadline: fakeHeadline.join(' ').toUpperCase() })
 
   }
 
@@ -94,9 +96,9 @@ class DisplayNews extends React.Component {
           {!articles && !this.error && <h1>Loading...</h1>}
           {articles &&
             <>
-              <h2>{articles[shuffleIndex].title}</h2>
+              <h2>{articles[shuffleIndex].title.toUpperCase()}</h2>
               <div className="article-wrapper">
-                <div>{articles[shuffleIndex].description}</div>
+                <div>{articles[shuffleIndex].content}</div>
                 <img src={articles[shuffleIndex].urlToImage} alt="Image not available"/>
               </div>
             </>
@@ -106,8 +108,8 @@ class DisplayNews extends React.Component {
           <button onClick={this.handleFake}>Randomise</button>
           <div>
             <button onClick={this.makeFakeHeadLine} value="synonyms">Similar News</button>
-            <button>News2</button>
-            <button>News3</button>
+            <button onClick={this.makeFakeHeadLine} value="typeOf">News2</button>
+            <button onClick={this.makeFakeHeadLine} value="hasTypes">News3</button>
           </div>
           <h2>{fakeHeadline}</h2>
         </article>
