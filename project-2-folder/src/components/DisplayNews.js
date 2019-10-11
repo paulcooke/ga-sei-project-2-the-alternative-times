@@ -16,6 +16,7 @@ class DisplayNews extends React.Component {
 
     this.handleShuffle = this.handleShuffle.bind(this)
     this.handleFake = this.handleFake.bind(this)
+    this.makeFakeHeadLine = this.makeFakeHeadLine.bind(this)
   }
 
   componentDidMount() {
@@ -62,19 +63,33 @@ class DisplayNews extends React.Component {
   }
 
   makeFakeHeadLine(filter) {
-    let arr = []
-    const fakeHeadlineObject = { ...this.state.fakeHeadlineObject }
-    
-    for (let word in fakeHeadlineObject) {
-      if (!fakeHeadlineObject[word]['results']) {
-        console.log('no details')
+    let fakeHeadline = this.state.originalHeadline.map(word => {
+      
+      if (typeof this.state.fakeHeadlineObject[word] === 'string') {
+        console.log('string:',word)
+        return word
+      } else if (typeof this.state.fakeHeadlineObject[word] === 'undefined') {
+        console.log('undefined:',word)
+        return word
       } else {
-        console.log(fakeHeadlineObject[word], 'text')
+        return this.state.fakeHeadlineObject[word].results[0][filter] ? this.state.fakeHeadlineObject[word].results[0][filter][0] : word
       }
-        
-    }
+    })
+
+    console.log('fake headline array',fakeHeadline)
     
   }
+
+
+  // for (let word in fakeHeadlineObject) {
+  //   if (!fakeHeadlineObject[word]['results']) {
+  //     console.log('no details')
+  //   } else {
+  //     console.log(fakeHeadlineObject[word], 'text')
+  //   } 
+  // }
+    
+  
   
   // makeFakeHeadline(choice) {
   //   const tempArr = []
