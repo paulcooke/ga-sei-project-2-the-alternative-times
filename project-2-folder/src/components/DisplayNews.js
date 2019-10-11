@@ -11,7 +11,7 @@ class DisplayNews extends React.Component {
       error: '',
       originalHeadline: '',
       fakeHeadlineObject: {},
-      fakeHeadlineArray: []
+      fakeHeadline: 'Your fake news will appear here'
     }
 
     this.handleShuffle = this.handleShuffle.bind(this)
@@ -35,7 +35,7 @@ class DisplayNews extends React.Component {
   }
 
   // handleFake maps the split normal headline and makes a new object in state. we'll then use that new object to get the words for the new headline
-  handleFake() {
+  handleFake(e) {
     const wordsKey = process.env.WORDSAPI_ACCESS_KEY
     
     const originalHeadline = this.state.originalHeadline
@@ -44,20 +44,31 @@ class DisplayNews extends React.Component {
     const fakeHeadlineObject = {}
 
     Promise.all(fakeHeadline.map(word => {
-      if (word.length > 5) {
+      if (word.length < 5) {
+        fakeHeadlineObject[word] = word
+      } else {
         axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
           headers: { 
             'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
             'x-rapidapi-key': wordsKey
           } })
           .then(res => fakeHeadlineObject[word] = res.data)
-      } else {
-        return word
-      }
+          .catch(() => fakeHeadlineObject[word] = word)
+      } 
     }))
       .then(() => this.setState({ fakeHeadlineObject }))
       .catch(err => console.log(err))
-    console.log('checking the object', fakeHeadlineObject)
+    this.makeFakeHeadLine(e.target.value)
+  }
+
+  makeFakeHeadLine(filter) {
+    let arr = []
+    const fakeHeadlineObject = { ...this.state.fakeHeadlineObject }
+    console.log(fakeHeadlineObject, 'text')
+    for (let word in fakeHeadlineObject) {
+      console.log('worked')
+    }
+    
   }
   
   // makeFakeHeadline(choice) {
@@ -73,7 +84,7 @@ class DisplayNews extends React.Component {
   // }  
 
   render() {
-    const { articles, shuffleIndex } = this.state
+    const { articles, shuffleIndex, fakeHeadline } = this.state
     console.log('checking state', this.state/* , this.makeFakeHeadline('synonyms') */)
     return (
       <>
@@ -92,7 +103,7 @@ class DisplayNews extends React.Component {
         </article>
         <article>
           <button onClick={this.handleFake} value="synonyms">change news</button>
-          <h2>placehoilder</h2>
+          <h2>{fakeHeadline}</h2>
         </article>
       </>
     )
