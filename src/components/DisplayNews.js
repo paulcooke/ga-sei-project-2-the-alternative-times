@@ -45,7 +45,7 @@ class DisplayNews extends React.Component {
     const fakeHeadlineObject = {}
 
     Promise.all(this.state.originalHeadline.map(word => {
-      if (word.length < 8) {
+      if (word.length < 3) {
         fakeHeadlineObject[word] = word
       } else {
         axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
