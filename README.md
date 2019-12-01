@@ -10,6 +10,7 @@
 ### Technologies used
 * React.js 
 * JavaScript (ES6) / HTML5 / CSS3
+* Axios & two RESTful APIs
 * Git / Github
 
 ### Deployment
