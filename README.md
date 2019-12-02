@@ -44,7 +44,7 @@ We then set up the app to work as follows:
 
 ### Challenges
 * Dealing with gaps in information - the API doesn't hold all types of information on all words, so we had to include some control flow to deal with missing or undefined data
-* The number of APi requests we were sending - we introduced a minimum word length for words sent to the API to stop it trying to replace short words such as 'at' or 'and'
+* The number of API requests we were sending - we introduced a minimum word length for words sent to the API to stop it trying to replace short words such as 'at' or 'and'
 * Punctuation threw up some interesting errors, we ended up removing much of it with a Regex filter
 
 ### Future changes & features we would like to add
