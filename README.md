@@ -42,13 +42,13 @@ Promise.all(this.state.originalHeadline.map(word => {
   if (word.length < 8) {
     fakeHeadlineObject[word] = word
   } else {
-   	axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
-   	  headers: { 
-   	    'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
-   	    'x-rapidapi-key': wordsKey
-  	  } })
-   	  .then(res => fakeHeadlineObject[word] = res.data)
-   	  .catch(() => fakeHeadlineObject[word] = word)
+    axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
+   	   headers: { 
+   	     'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+   	     'x-rapidapi-key': wordsKey
+  	 } })
+   	 .then(res => fakeHeadlineObject[word] = res.data)
+   	 .catch(() => fakeHeadlineObject[word] = word)
   } 
 }))
   .then(() => this.setState({ fakeHeadlineObject }))
