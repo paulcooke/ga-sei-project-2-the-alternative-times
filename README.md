@@ -37,7 +37,24 @@ We then set up the app to work as follows:
 * The use of a Promise.all when sending the words in a headline to the words API one by one. We had to learn how to do this to get the requests to work inside of a map
 * The Promise.all:
 
-![](readme_assets/promise_all.png)
+```javascript
+Promise.all(this.state.originalHeadline.map(word => {
+      if (word.length < 8) {
+        fakeHeadlineObject[word] = word
+      } else {
+        axios.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, {
+          headers: { 
+            'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+            'x-rapidapi-key': wordsKey
+          } })
+          .then(res => fakeHeadlineObject[word] = res.data)
+          .catch(() => fakeHeadlineObject[word] = word)
+      } 
+    }))
+      .then(() => this.setState({ fakeHeadlineObject }))
+      .catch(err => console.log(err))
+    this.setState({ fakeHeadline: 'YOUR FAKE NEWS WILL APPEAR HERE' })
+```
 
 * The app works, and it tends to produce amusing results!
 * Mary-Anne came up with nice styling to make the page look like a newspaper
