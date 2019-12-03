@@ -17,7 +17,7 @@
 The app is deployed on Heroku and can be found here: [https://the-alternative-times.herokuapp.com/]()
 
 ### Overview
-This project was a surprise Reactathon, in which we worked in pairs to build a React front-end that consumed at least one RESTful API. I was lucky to be paired with Mary-Anne, as we worked well together. 
+This project was a surprise Reactathon, in which we worked in pairs to build a React front-end that consumed at least one RESTful API. I was lucky to be paired with [Mary-Anne Triggs](https://github.com/maryannetriggs), as we worked well together. 
 
 We quickly decided on the idea - we would use the News API ([https://newsapi.org/]()) to retrieve a selection of headlines. The user would be able to choose a headline using a shuffle button, and then create an alternative news headline by clicking a button that would send in turn each word in the headline to the Words API ([https://www.wordsapi.com/]()) and receive back, for each word, an alternative word to replace the original and thus create an alternative headline.
 
